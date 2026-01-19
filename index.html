@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Static Chatbot</title>
+
+  <!-- Bot Framework Web Chat -->
+  <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+
+  <style>
+    :root {
+      --primary-color: #55C1B1;
+      --header-textColor: #fff;
+      --chat-width: 100%;
+      --chat-height: 100vh;
+      --border-radius: 0;
+      --header-height: 48px;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, sans-serif;
+      background: transparent !important; 
+      height: 100%;
+    }
+    #chatbot-popup {
+  position: fixed;
+  top: 50%;                /* move to middle vertically */
+  left: 50%;               /* move to middle horizontally */
+  transform: translate(-50%, -50%); /* center the box */
+      width: var(--chat-width);
+      height: var(--chat-height);
+  background: transparent !important;
+  border-radius: 8px;       /* optional rounded corners */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* optional shadow */
+  overflow: hidden;
+  z-index: 999;
+}
+
+    #chatbot-header {
+      background: var(--primary-color);
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--header-textColor);
+      height: var(--header-height);
+    }
+    #webchat {
+  height: calc(100% - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 30%;   /* 👈 moves the typing box up */
+  box-sizing: border-box;
+}
+    button {
+      background: none;
+      border: none;
+      color: var(--header-textColor);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+    /* Optional bubble spacing */
+    #webchat .webchat__bubble {
+      max-width: 85% !important;
+      margin: 8px !important;
+      border-radius: 8px !important;
+    }
+    #webchat .webchat__bubble__content {
+      padding: 8px 12px !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Chatbot Container -->
+  <div id="chatbot-popup" role="complementary" aria-label="Chat Assistant">
+    <div id="chatbot-header">
+      <span>Assistant</span>
+      <div>
+        <button onclick="restartConversation()">⟳</button>
+      </div>
+    </div>
+    <div id="webchat" role="main"></div>
+  </div>
+
+  <script>
+    // Replace with your Power Virtual Agents Direct Line token endpoint
+    const tokenEndpoint = "https://default605b6368f7bb49c198403a897e70b5.31.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr7a8_gsiWebsiteAiTest/directline/token?api-version=2022-03-01-preview";
+
+    const styleOptions = {
+      accent: "#55C1B1",
+      hideUploadButton: true,
+      sendBoxHeight: 50,
+
+      // Bot avatar
+      botAvatarImage: "https://i.imgur.com/pKReqIG.png",
+      botAvatarInitials: "B",
+      botAvatarBackgroundColor: "#FFFFFF",
+
+      // User avatar
+      userAvatarInitials: "U",
+
+      // Bot bubbles
+      bubbleBackground: "#eef8f7",
+      bubbleTextColor: "#06444A",
+      bubbleBorderColor: "transparent",
+      bubbleBorderRadius: 8,
+
+      // User bubbles
+      bubbleFromUserBackground: "#ddf2ef",
+      bubbleFromUserTextColor: "#06444A",
+      bubbleFromUserBorderColor: "transparent",
+      bubbleFromUserBorderRadius: 8,
+
+      // Send box styling
+      sendBoxBackground: "#FFFFFF",
+      sendBoxTextColor: "#06444A",
+      sendBoxBorderTop: "solid 1px #55C1B1",
+      sendBoxPlaceholderColor: "#032225"
+    };
+
+    function hideChat() {
+      document.body.style.display = "none"; // hides everything in the iframe
+    }
+
+    function createCustomStore() {
+      return window.WebChat.createStore({}, ({ dispatch }) => next => action => {
+        if (action.type === "DIRECT_LINE/CONNECT_FULFILLED") {
+          dispatch({
+            type: "DIRECT_LINE/POST_ACTIVITY",
+            meta: { method: "keyboard" },
+            payload: {
+              activity: {
+                channelData: { postBack: true },
+                name: "startConversation",
+                type: "event"
+              }
+            }
+          });
+        }
+        return next(action);
+      });
+    }
+
+    async function restartConversation() {
+      const response = await fetch(tokenEndpoint);
+      const { token } = await response.json();
+      const newDirectLine = window.WebChat.createDirectLine({ token });
+      window.WebChat.renderWebChat(
+        {
+          directLine: newDirectLine,
+          styleOptions,
+          store: createCustomStore(),
+          locale: "en-US"
+        },
+        document.getElementById("webchat")
+      );
+    }
+
+    async function initializeChat() {
+      const response = await fetch(tokenEndpoint);
+      const { token } = await response.json();
+      const directLine = window.WebChat.createDirectLine({ token });
+      window.WebChat.renderWebChat(
+        {
+          directLine,
+          styleOptions,
+          store: createCustomStore(),
+          locale: "en-US"
+        },
+        document.getElementById("webchat")
+      );
+    }
+
+    initializeChat();
+  </script>
+</body>
+</html>
