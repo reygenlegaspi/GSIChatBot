@@ -26,16 +26,23 @@
     }
     #chatbot-popup {
   position: fixed;
-  top: 50%;                /* move to middle vertically */
-  left: 50%;               /* move to middle horizontally */
-  transform: translate(-50%, -50%); /* center the box */
-      width: var(--chat-width);
-      height: var(--chat-height);
-  background: transparent !important;
-  border-radius: 8px;       /* optional rounded corners */
+  top: 50%;                
+  left: 50%;               
+  transform: translate(-50%, -50%); 
+  width: var(--chat-width);
+  height: var(--chat-height);
+
+  /* Frosted glass effect */
+  background: rgba(255, 255, 255, 0.2);   /* semi-transparent background */
+  backdrop-filter: blur(12px);            /* blur whatever is behind */
+  -webkit-backdrop-filter: blur(12px);    /* Safari support */
+
+  border-radius: 8px;
   overflow: hidden;
   z-index: 999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* optional shadow */
 }
+
 
     #chatbot-header {
       background: var(--primary-color);
@@ -78,7 +85,7 @@ background: transparent !important;
   <!-- Chatbot Container -->
   <div id="chatbot-popup" role="complementary" aria-label="Chat Assistant">
     <div id="chatbot-header">
-      <span>BE.Bot (Beta)</span>
+      <span>BE.Bot (beta)</span>
       <div>
         <button onclick="restartConversation()">⟳</button>
       </div>
@@ -176,4 +183,3 @@ background: transparent !important;
   </script>
 </body>
 </html>
-
