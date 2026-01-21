@@ -24,7 +24,8 @@
       background: transparent !important; 
       height: 100%;
     }
-    #chatbot-popup {
+/* Outer popup */
+#chatbot-popup {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -32,29 +33,30 @@
   width: var(--chat-width);
   height: var(--chat-height);
 
-  /* Frosted glass effect */
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);   /* translucent white */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
-  border-radius: 8px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   overflow: hidden;
   z-index: 999;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+/* Header bar */
 #chatbot-header {
-  background: rgba(6, 68, 74, 0.8);
+  background: rgba(6, 68, 74, 0.4);        /* semi-transparent teal */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  color: #fff;
   padding: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--header-textColor);
   height: var(--header-height);
 }
 
+/* Webchat container */
 #webchat {
   height: calc(100% - var(--header-height));
   display: flex;
@@ -64,12 +66,31 @@
   background: transparent !important;
 }
 
-/* 🔥 Critical override */
+/* Force transcript container to be frosted */
 #webchat > div[role="complementary"] {
-  background-color: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.25) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
+
+/* Bubbles also frosted */
+#webchat .webchat__bubble {
+  background: rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #06444a !important;
+  border-radius: 8px !important;
+  margin: 8px !important;
+}
+
+/* Send box frosted */
+#webchat .webchat__send-box {
+  background: rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(85, 193, 177, 0.4);
+}
+
 
     button {
       background: none;
@@ -108,33 +129,34 @@
     const tokenEndpoint = "https://default605b6368f7bb49c198403a897e70b5.31.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr7a8_gsiWebsiteAiTest/directline/token?api-version=2022-03-01-preview";
 
     const styleOptions = {
-      accent: "#06444a",
-      hideUploadButton: true,
-      sendBoxHeight: 50,
+  accent: "#06444a",
+  hideUploadButton: true,
+  sendBoxHeight: 50,
 
-      // Bot avatar
-      botAvatarImage: "https://i.imgur.com/pKReqIG.png",
-      botAvatarInitials: "B",
-      botAvatarBackgroundColor: "#FFFFFF",
+  // Bot avatar
+  botAvatarImage: "https://i.imgur.com/pKReqIG.png",
+  botAvatarInitials: "B",
+  botAvatarBackgroundColor: "transparent",
 
-      // Bot bubbles
-      bubbleBackground: "#eef8f7",
-      bubbleTextColor: "#06444A",
-      bubbleBorderColor: "transparent",
-      bubbleBorderRadius: 8,
+  // Bot bubbles (frosted)
+  bubbleBackground: "rgba(255,255,255,0.25)",
+  bubbleTextColor: "#06444A",
+  bubbleBorderColor: "transparent",
+  bubbleBorderRadius: 8,
 
-      // User bubbles
-      bubbleFromUserBackground: "#06444a",
-      bubbleFromUserTextColor: "#ffffff",
-      bubbleFromUserBorderColor: "transparent",
-      bubbleFromUserBorderRadius: 8,
+  // User bubbles (frosted)
+  bubbleFromUserBackground: "rgba(255,255,255,0.25)",
+  bubbleFromUserTextColor: "#06444A",
+  bubbleFromUserBorderColor: "transparent",
+  bubbleFromUserBorderRadius: 8,
 
-      // Send box styling
-      sendBoxBackground: "#FFFFFF",
-      sendBoxTextColor: "#06444A",
-      sendBoxBorderTop: "solid 1px #55C1B1",
-      sendBoxPlaceholderColor: "#032225"
-    };
+  // Send box styling (frosted)
+  sendBoxBackground: "rgba(255,255,255,0.25)",
+  sendBoxTextColor: "#06444A",
+  sendBoxBorderTop: "solid 1px rgba(85,193,177,0.4)",
+  sendBoxPlaceholderColor: "#032225"
+};
+
 
     function hideChat() {
       document.body.style.display = "none"; // hides everything in the iframe
