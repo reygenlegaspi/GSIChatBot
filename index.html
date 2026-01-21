@@ -26,40 +26,51 @@
     }
     #chatbot-popup {
   position: fixed;
-  top: 50%;                
-  left: 50%;               
-  transform: translate(-50%, -50%); 
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: var(--chat-width);
   height: var(--chat-height);
 
   /* Frosted glass effect */
-  background: rgba(255, 255, 255, 0.2);   /* semi-transparent background */
-  backdrop-filter: blur(12px);            /* blur whatever is behind */
-  -webkit-backdrop-filter: blur(12px);    /* Safari support */
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
   border-radius: 8px;
   overflow: hidden;
   z-index: 999;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* optional shadow */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+#chatbot-header {
+  background: rgba(6, 68, 74, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--header-textColor);
+  height: var(--header-height);
+}
 
-    #chatbot-header {
-      background: var(--primary-color);
-      padding: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: var(--header-textColor);
-      height: var(--header-height);
-    }
-    #webchat {
+#webchat {
   height: calc(100% - var(--header-height));
   display: flex;
   flex-direction: column;
-  padding-bottom: 30%;   /* 👈 moves the typing box up */
+  padding-bottom: 30%;
   box-sizing: border-box;
+  background: transparent !important;
 }
+
+/* 🔥 Critical override */
+#webchat > div[role="complementary"] {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
     button {
       background: none;
       border: none;
